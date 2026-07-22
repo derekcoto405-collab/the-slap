@@ -3,20 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TheSlap - Hollywood Arts</title>
+    <title>TheSlap - Red Social</title>
     <!-- Firebase SDKs -->
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
-    
-    <style>
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: 'Comic Sans MS', 'Trebuchet MS', sans-serif;
-        }
 
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Comic Sans MS', 'Trebuchet MS', sans-serif; }
         body {
             background-color: #120118;
             background-image: radial-gradient(#d80073 1px, transparent 1px);
@@ -24,408 +18,356 @@
             color: #fff;
             display: flex;
             justify-content: center;
-            align-items: center;
             min-height: 100vh;
             padding: 10px;
         }
 
-        /* PearPhone Shell */
         .pear-container {
-            width: 100%;
-            max-width: 480px;
+            width: 100%; max-width: 450px;
             background: linear-gradient(145deg, #e6007e, #800040);
-            border-radius: 40px;
-            padding: 20px 15px;
-            box-shadow: 0 0 30px rgba(230, 0, 126, 0.5), inset 0 0 15px rgba(255, 255, 255, 0.4);
+            border-radius: 35px; padding: 15px;
+            box-shadow: 0 0 25px rgba(230, 0, 126, 0.6);
             border: 4px solid #ff66cc;
-            position: relative;
+            height: fit-content;
         }
 
-        .pear-header {
-            text-align: center;
-            margin-bottom: 15px;
-        }
+        .pear-logo { text-align: center; font-size: 28px; font-weight: 900; color: #fff; margin-bottom: 12px; text-shadow: 0 0 8px #ff007f; }
+        .pear-logo span { color: #ffeb3b; }
 
-        .pear-logo {
-            font-size: 32px;
-            font-weight: 900;
-            color: #fff;
-            text-shadow: 0 0 8px #ff007f, 2px 2px #000;
-            letter-spacing: -1px;
-        }
+        /* Pantalla de Autenticación */
+        .auth-card { background: rgba(10, 2, 18, 0.95); padding: 20px; border-radius: 20px; border: 2px solid #ff007f; text-align: center; }
+        .auth-card input { width: 100%; padding: 10px; margin: 8px 0; border-radius: 10px; border: 1px solid #ff007f; background: #1a0526; color: #fff; font-size: 13px; outline: none; }
+        .btn-main { background: linear-gradient(#ff007f, #99004d); color: #fff; border: none; padding: 10px 20px; border-radius: 20px; font-weight: bold; width: 100%; margin-top: 10px; cursor: pointer; box-shadow: 0 2px 5px rgba(0,0,0,0.4); }
+        .auth-switch { font-size: 11px; margin-top: 12px; cursor: pointer; color: #00ffff; }
 
-        .pear-logo span {
-            color: #ffeb3b;
-        }
-
-        /* Wallpapers selector */
-        .bg-picker {
-            display: flex;
-            gap: 8px;
-            overflow-x: auto;
-            padding: 8px;
-            background: rgba(0, 0, 0, 0.4);
-            border-radius: 12px;
-            margin-bottom: 12px;
-        }
-
-        .bg-btn {
-            padding: 5px 10px;
-            font-size: 11px;
-            background: #d80073;
-            color: #fff;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            white-space: nowrap;
-            font-weight: bold;
-        }
-
-        .bg-btn:hover {
-            background: #ff007f;
-        }
-
-        /* Screen Area */
-        .screen {
-            background: #0d0114;
-            border-radius: 20px;
-            padding: 15px;
-            border: 3px solid #ff3399;
-            box-shadow: inset 0 0 10px #000;
-            background-size: cover;
-            background-position: center;
-            transition: background 0.3s;
-        }
-
-        /* Profile Header */
+        /* Pantalla Principal */
+        .screen { display: none; }
+        
         .profile-card {
-            background: rgba(20, 5, 30, 0.85);
-            border: 2px solid #ff007f;
-            border-radius: 15px;
-            padding: 12px;
-            display: flex;
-            gap: 12px;
-            align-items: center;
-            margin-bottom: 15px;
-            backdrop-filter: blur(4px);
+            background: rgba(20, 5, 30, 0.9);
+            border: 2px solid #ff007f; border-radius: 15px; padding: 12px;
+            display: flex; gap: 12px; align-items: center; margin-bottom: 12px;
         }
+        .avatar-lg { width: 65px; height: 65px; border-radius: 50%; border: 3px solid #ff007f; object-fit: cover; }
+        
+        .post-box { background: rgba(255,255,255,0.95); border-radius: 15px; padding: 10px; margin-bottom: 15px; color: #333; border: 2px solid #ff007f; }
+        .post-box textarea { width: 100%; height: 55px; border: none; outline: none; resize: none; font-size: 13px; }
 
-        .avatar-large {
-            width: 75px;
-            height: 75px;
-            border-radius: 50%;
-            border: 3px solid #ff007f;
-            object-fit: cover;
-            box-shadow: 0 0 10px #ff007f;
+        .section-title { color: #ffcc00; font-size: 13px; margin: 12px 0 6px 0; text-transform: uppercase; letter-spacing: 1px; font-weight: bold; }
+
+        /* Lista de Amigos / Usuarios */
+        .users-scroll { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 6px; margin-bottom: 10px; }
+        .user-mini-card {
+            background: rgba(255,255,255,0.08); border-radius: 10px; padding: 8px; text-align: center;
+            min-width: 80px; border: 1px solid #ff007f; flex-shrink: 0;
         }
+        .user-mini-card img { width: 38px; height: 38px; border-radius: 50%; object-fit: cover; border: 1px solid #ffcc00; }
+        .user-mini-name { font-size: 10px; color: #fff; margin: 4px 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 65px; }
+        .btn-follow { background: #00cc66; color: #fff; border: none; padding: 2px 6px; font-size: 9px; border-radius: 6px; cursor: pointer; font-weight: bold; }
+        .btn-following { background: #555; color: #ccc; }
 
-        .profile-info h3 {
-            color: #ffcc00;
-            font-size: 18px;
-            text-shadow: 1px 1px #000;
-        }
-
-        .status-badge {
-            font-size: 12px;
-            color: #00ffff;
-            margin-top: 3px;
-        }
-
-        .follow-stats {
-            display: flex;
-            gap: 10px;
-            font-size: 11px;
-            color: #ff99dd;
-            margin-top: 5px;
-        }
-
-        /* Post Box */
-        .post-box {
-            background: rgba(255, 255, 255, 0.95);
-            border-radius: 15px;
-            padding: 12px;
-            margin-bottom: 15px;
-            color: #333;
-            border: 2px solid #ff007f;
-        }
-
-        .post-box textarea {
-            width: 100%;
-            height: 60px;
-            border: none;
-            outline: none;
-            resize: none;
-            font-size: 13px;
-            color: #222;
-        }
-
-        .feeling-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-top: 8px;
-            border-top: 1px solid #ddd;
-            padding-top: 6px;
-        }
-
-        .feeling-label {
-            font-size: 12px;
-            font-weight: bold;
-            color: #d80073;
-        }
-
-        .btn-slap {
-            background: linear-gradient(#ff007f, #99004d);
-            color: #fff;
-            border: none;
-            padding: 6px 15px;
-            font-weight: bold;
-            border-radius: 20px;
-            cursor: pointer;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.3);
-        }
-
-        /* Feed Posts */
+        /* Feed */
         .feed-item {
-            background: rgba(15, 0, 25, 0.9);
-            border: 1.5px solid #d80073;
-            border-radius: 12px;
-            padding: 10px;
-            margin-bottom: 12px;
+            background: rgba(15, 0, 25, 0.95); border: 1.5px solid #d80073; border-radius: 12px; padding: 10px; margin-bottom: 10px;
         }
-
-        .feed-header {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            margin-bottom: 6px;
-        }
-
-        .avatar-small {
-            width: 32px;
-            height: 32px;
-            border-radius: 50%;
-            border: 1px solid #ff007f;
-        }
-
-        .feed-user {
-            font-weight: bold;
-            color: #ff66cc;
-            font-size: 13px;
-        }
-
-        .feed-feeling {
-            font-size: 11px;
-            color: #00ffff;
-        }
-
-        .feed-text {
-            font-size: 13px;
-            line-height: 1.3;
-            color: #fff;
-        }
-
-        /* Dudes / Friends Section */
-        .dudes-title {
-            color: #ffcc00;
-            font-size: 14px;
-            margin: 15px 0 8px 0;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        .dudes-list {
-            display: flex;
-            gap: 10px;
-            overflow-x: auto;
-            padding-bottom: 5px;
-        }
-
-        .dude-card {
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 10px;
-            padding: 8px;
-            text-align: center;
-            min-width: 75px;
-            border: 1px solid #ff007f;
-        }
-
-        .dude-card img {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-        }
-
-        .dude-name {
-            font-size: 10px;
-            color: #fff;
-            margin: 4px 0;
-        }
-
-        .btn-follow {
-            background: #00cc66;
-            color: #fff;
-            border: none;
-            padding: 2px 6px;
-            font-size: 9px;
-            border-radius: 5px;
-            cursor: pointer;
-        }
+        .feed-header { display: flex; align-items: center; gap: 8px; margin-bottom: 6px; }
+        .avatar-sm { width: 30px; height: 30px; border-radius: 50%; object-fit: cover; border: 1px solid #ff007f; }
+        .feed-user { font-weight: bold; color: #ff66cc; font-size: 12px; }
+        .feed-text { font-size: 12px; line-height: 1.3; color: #fff; word-break: break-word; }
+        
+        /* Comentarios */
+        .comments-section { margin-top: 8px; padding-top: 6px; border-top: 1px dashed rgba(255,255,255,0.2); }
+        .comment-item { font-size: 11px; color: #e0e0e0; margin-bottom: 3px; }
+        .comment-item span { color: #ffcc00; font-weight: bold; }
+        .reply-box { display: flex; gap: 5px; margin-top: 6px; }
+        .reply-box input { flex: 1; padding: 4px 8px; border-radius: 8px; border: 1px solid #ff007f; background: #0d0114; color: #fff; font-size: 11px; outline: none; }
+        .reply-box button { background: #d80073; color: #fff; border: none; padding: 4px 10px; border-radius: 8px; font-size: 10px; cursor: pointer; font-weight: bold; }
     </style>
 </head>
 <body>
 
 <div class="pear-container">
-    <div class="pear-header">
-        <div class="pear-logo">✋ The<span>Slap</span></div>
-    </div>
+    <div class="pear-logo">✋ The<span>Slap</span></div>
 
-    <!-- Wallpapers -->
-    <div class="bg-picker">
-        <button class="bg-btn" onclick="setBg('leopard')">🐆 Leopard</button>
-        <button class="bg-btn" onclick="setBg('lockers')">🏫 Lockers</button>
-        <button class="bg-btn" onclick="setBg('stars')">⭐ Stars</button>
-        <button class="bg-btn" onclick="setBg('shine')">🌃 Shine</button>
-        <button class="bg-btn" onclick="setBg('cds')">💿 CDs</button>
-    </div>
-
-    <!-- Main Screen -->
-    <div class="screen" id="mainScreen">
+    <!-- PANTALLA 1: LOGIN / REGISTRO -->
+    <div class="auth-card" id="authScreen">
+        <h3 id="authTitle" style="color:#ff66cc; margin-bottom:8px;">Iniciar Sesión</h3>
+        <input type="text" id="regName" placeholder="Tu Nombre Completo" style="display:none;">
+        <input type="text" id="regHandle" placeholder="Nombre de usuario (ej: @derek)" style="display:none;">
+        <input type="text" id="regAvatar" placeholder="URL de tu Foto de Perfil" style="display:none;">
+        <input type="email" id="authEmail" placeholder="Correo electrónico">
+        <input type="password" id="authPass" placeholder="Contraseña">
         
-        <!-- Profile Header -->
+        <button class="btn-main" onclick="handleAuth()" id="authBtn">Entrar</button>
+        <p class="auth-switch" onclick="toggleAuthMode()">
+            <span id="toggleText">¿No tienes cuenta? Regístrate aquí</span>
+        </p>
+    </div>
+
+    <!-- PANTALLA 2: APLICACIÓN PRINCIPAL -->
+    <div class="screen" id="appScreen">
+        <!-- Perfil del usuario actual -->
         <div class="profile-card">
-            <img src="https://i.pravatar.cc/150?img=32" id="userAvatar" class="avatar-large" alt="Profile">
-            <div class="profile-info">
-                <h3 id="userName">Tori Vega</h3>
-                <div class="status-badge">FEELING: <span id="userFeeling">😎 Feeling Awesome</span></div>
-                <div class="follow-stats">
-                    <span><b>142</b> Dudes</span>
-                    <span><b>89</b> Following</span>
-                </div>
+            <img src="" id="myAvatar" class="avatar-lg">
+            <div style="flex:1; overflow:hidden;">
+                <h3 id="myName" style="color:#ffcc00; font-size:15px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;"></h3>
+                <div id="myHandle" style="font-size:11px; color:#00ffff; margin-bottom:3px;"></div>
+                <div style="font-size:10px; color:#ff99dd;">FEELING: <span id="myFeelingText">😎 Awesome</span></div>
+                <button onclick="logout()" style="background:#cc0000; color:#fff; border:none; padding:2px 8px; border-radius:4px; font-size:9px; margin-top:5px; cursor:pointer; font-weight:bold;">Cerrar Sesión</button>
             </div>
         </div>
 
-        <!-- Post Box -->
+        <!-- Caja para publicar -->
         <div class="post-box">
-            <textarea id="postContent" placeholder="What's on your mind?"></textarea>
-            <div class="feeling-row">
-                <span class="feeling-label">FEELING: 
-                    <select id="feelingSelect" style="border:none; background:transparent; font-size:12px;">
-                        <option>😃 Happy</option>
-                        <option>😎 Cool</option>
-                        <option>😭 Dramatic</option>
-                        <option>😡 Annoyed</option>
-                        <option>🍕 Hungry</option>
-                    </select>
-                </span>
-                <button class="btn-slap" onclick="publishSlap()">POST!</button>
+            <textarea id="postContent" placeholder="¿Qué está pasando en Hollywood Arts?"></textarea>
+            <div style="display:flex; justify-content:space-between; align-items:center; border-top:1px solid #ddd; padding-top:6px; margin-top:4px;">
+                <select id="postFeeling" style="font-size:11px; border:none; background:transparent; font-weight:bold; color:#d80073;">
+                    <option>😃 Happy</option>
+                    <option>😎 Cool</option>
+                    <option>😭 Dramatic</option>
+                    <option>😡 Annoyed</option>
+                    <option>🍕 Hungry</option>
+                </select>
+                <button onclick="createPost()" style="background:linear-gradient(#ff007f,#99004d); color:#fff; border:none; padding:5px 14px; border-radius:15px; font-weight:bold; cursor:pointer; font-size:11px;">POST!</button>
             </div>
         </div>
 
-        <!-- Dudes (Friends to follow) -->
-        <div class="dudes-title">Dudes (Friends)</div>
-        <div class="dudes-list">
-            <div class="dude-card">
-                <img src="https://i.pravatar.cc/150?img=12">
-                <div class="dude-name">Jade W.</div>
-                <button class="btn-follow">Follow</button>
-            </div>
-            <div class="dude-card">
-                <img src="https://i.pravatar.cc/150?img=47">
-                <div class="dude-name">Cat V.</div>
-                <button class="btn-follow">Follow</button>
-            </div>
-            <div class="dude-card">
-                <img src="https://i.pravatar.cc/150?img=60">
-                <div class="dude-name">Beck O.</div>
-                <button class="btn-follow">Follow</button>
-            </div>
-            <div class="dude-card">
-                <img src="https://i.pravatar.cc/150?img=33">
-                <div class="dude-name">Robbie S.</div>
-                <button class="btn-follow">Follow</button>
-            </div>
+        <!-- Lista de Usuarios Reales para Seguir -->
+        <div class="section-title">Comunidad / Dudes</div>
+        <div class="users-scroll" id="usersContainer">
+            <!-- Se cargan dinámicamente -->
         </div>
 
-        <!-- Feed -->
-        <div class="dudes-title" style="margin-top:20px;">Feed</div>
+        <!-- Feed Principal -->
+        <div class="section-title">Feed Global</div>
         <div id="feedContainer"></div>
-
     </div>
 </div>
 
 <script>
-    // 1. Configura tus credenciales de Firebase aquí
+    // Configuración real con tus claves de Firebase
     const firebaseConfig = {
-        apiKey: "TU_API_KEY",
-        authDomain: "TU_PROYECTO.firebaseapp.com",
-        projectId: "TU_PROYECTO",
-        storageBucket: "TU_PROYECTO.appspot.com",
-        messagingSenderId: "123456789",
-        appId: "1:123456789:web:abcdef"
+        apiKey: "AIzaSyACrD2lJ3jCh9otB9T5", // Clave configurada
+        authDomain: "theslap-1b571.firebaseapp.com",
+        projectId: "theslap-1b571",
+        storageBucket: "theslap-1b571.appspot.com",
+        messagingSenderId: "372771523960",
+        appId: "1:372771523960:web:166fbf"
     };
 
-    // Inicializar Firebase (Descomentar al colocar tus datos)
-    // firebase.initializeApp(firebaseConfig);
-    // const db = firebase.firestore();
+    firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+    const db = firebase.firestore();
 
-    // 2. Filtro de Moderación de Seguridad
-    const badWords = ["tonto", "feo", "idiota", "estupido", "mierda"]; // Añade las que desees bloquear
+    let isRegistering = false;
+    let currentUser = null;
+    let currentUserData = null;
 
-    function filterText(text) {
-        let cleanText = text;
+    // 🛡️ Filtro de Seguridad Automático
+    const badWords = ["tonto", "idiota", "estupido", "feo", "mierda", "imbecil", "puta"];
+    function securityFilter(text) {
+        let clean = text;
         badWords.forEach(word => {
             const regex = new RegExp(word, "gi");
-            cleanText = cleanText.replace(regex, "****");
+            clean = clean.replace(regex, "****");
         });
-        return cleanText;
+        return clean;
     }
 
-    // 3. Cambiar Fondos
-    function setBg(type) {
-        const screen = document.getElementById('mainScreen');
-        if(type === 'leopard') screen.style.backgroundImage = "url('https://i.ibb.co/3s3X5f9/leopard.jpg')";
-        if(type === 'lockers') screen.style.backgroundImage = "url('https://i.ibb.co/L5hY8gW/lockers.jpg')";
-        if(type === 'stars') screen.style.backgroundImage = "url('https://i.ibb.co/M9K4Zc3/stars.jpg')";
-        if(type === 'shine') screen.style.backgroundImage = "url('https://i.ibb.co/0V9BvxN/shine.jpg')";
-        if(type === 'cds') screen.style.backgroundImage = "url('https://i.ibb.co/x7Y3wW7/cds.jpg')";
+    // Alternar entre Login y Registro
+    function toggleAuthMode() {
+        isRegistering = !isRegistering;
+        document.getElementById('authTitle').innerText = isRegistering ? "Crear Cuenta en TheSlap" : "Iniciar Sesión";
+        document.getElementById('regName').style.display = isRegistering ? "block" : "none";
+        document.getElementById('regHandle').style.display = isRegistering ? "block" : "none";
+        document.getElementById('regAvatar').style.display = isRegistering ? "block" : "none";
+        document.getElementById('authBtn').innerText = isRegistering ? "Registrarse" : "Entrar";
+        document.getElementById('toggleText').innerText = isRegistering ? "¿Ya tienes cuenta? Inicia sesión aquí" : "¿No tienes cuenta? Regístrate aquí";
     }
 
-    // 4. Publicar
-    function publishSlap() {
-        const input = document.getElementById('postContent');
-        const feeling = document.getElementById('feelingSelect').value;
-        if (!input.value.trim()) return;
+    // Gestionar Autenticación
+    async function handleAuth() {
+        const email = document.getElementById('authEmail').value.trim();
+        const pass = document.getElementById('authPass').value.trim();
 
-        const cleanMessage = filterText(input.value);
+        if(!email || !pass) return alert("Por favor completa los campos de correo y contraseña.");
 
-        const newPost = {
-            user: "Tori Vega",
-            avatar: "https://i.pravatar.cc/150?img=32",
-            text: cleanMessage,
+        if (isRegistering) {
+            const name = document.getElementById('regName').value.trim() || "Estudiante";
+            let handle = document.getElementById('regHandle').value.trim() || "@derek";
+            if(!handle.startsWith("@")) handle = "@" + handle;
+            const avatar = document.getElementById('regAvatar').value.trim() || "https://i.pravatar.cc/150?img=12";
+            
+            try {
+                const res = await auth.createUserWithEmailAndPassword(email, pass);
+                await db.collection("users").doc(res.user.uid).set({
+                    uid: res.user.uid,
+                    name: name,
+                    handle: handle,
+                    avatar: avatar,
+                    following: []
+                });
+            } catch(e) { alert(e.message); }
+        } else {
+            try {
+                await auth.signInWithEmailAndPassword(email, pass);
+            } catch(e) { alert(e.message); }
+        }
+    }
+
+    function logout() { auth.signOut(); }
+
+    // Escuchar estado del usuario en tiempo real
+    auth.onAuthStateChanged(async (user) => {
+        if (user) {
+            currentUser = user;
+            const doc = await db.collection("users").doc(user.uid).get();
+            if(doc.exists) {
+                currentUserData = doc.data();
+                document.getElementById('authScreen').style.display = "none";
+                document.getElementById('appScreen').style.display = "block";
+                
+                document.getElementById('myName').innerText = currentUserData.name;
+                document.getElementById('myHandle').innerText = currentUserData.handle;
+                document.getElementById('myAvatar').src = currentUserData.avatar;
+                
+                loadUsersAndFeed();
+            }
+        } else {
+            currentUser = null;
+            currentUserData = null;
+            document.getElementById('authScreen').style.display = "block";
+            document.getElementById('appScreen').style.display = "none";
+        }
+    });
+
+    // Publicar un nuevo Slap
+    async function createPost() {
+        const textInput = document.getElementById('postContent');
+        const feeling = document.getElementById('postFeeling').value;
+        const text = textInput.value.trim();
+        if(!text) return;
+
+        const safeText = securityFilter(text);
+
+        await db.collection("posts").add({
+            uid: currentUser.uid,
+            userName: currentUserData.name,
+            userHandle: currentUserData.handle,
+            userAvatar: currentUserData.avatar,
+            text: safeText,
             feeling: feeling,
-            time: "Just now"
-        };
+            createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+            comments: []
+        });
 
-        renderPost(newPost);
-        input.value = "";
+        textInput.value = "";
     }
 
-    function renderPost(post) {
-        const container = document.getElementById('feedContainer');
-        const html = `
-            <div class="feed-item">
-                <div class="feed-header">
-                    <img src="${post.avatar}" class="avatar-small">
-                    <div>
-                        <div class="feed-user">${post.user}</div>
-                        <div class="feed-feeling">FEELING: ${post.feeling}</div>
+    // Cargar Comunidad y Feed en Tiempo Real
+    function loadUsersAndFeed() {
+        // Cargar Usuarios (Dudes)
+        db.collection("users").onSnapshot(snapshot => {
+            const usersContainer = document.getElementById('usersContainer');
+            usersContainer.innerHTML = "";
+            snapshot.forEach(doc => {
+                const u = doc.data();
+                if(u.uid === currentUser.uid) return; // No mostrarse a sí mismo
+
+                const isFollowing = currentUserData.following && currentUserData.following.includes(u.uid);
+
+                usersContainer.innerHTML += `
+                    <div class="user-mini-card">
+                        <img src="${u.avatar}">
+                        <div class="user-mini-name">${u.name}</div>
+                        <button class="btn-follow ${isFollowing ? 'btn-following' : ''}" onclick="toggleFollow('${u.uid}', ${isFollowing})">
+                            ${isFollowing ? 'Following' : 'Follow'}
+                        </button>
                     </div>
-                </div>
-                <div class="feed-text">${post.text}</div>
-            </div>
-        `;
-        container.innerHTML = html + container.innerHTML;
+                `;
+            });
+        });
+
+        // Cargar Feed de Publicaciones
+        db.collection("posts").orderBy("createdAt", "desc").onSnapshot(snapshot => {
+            const feedContainer = document.getElementById('feedContainer');
+            feedContainer.innerHTML = "";
+            
+            if(snapshot.empty) {
+                feedContainer.innerHTML = `<div style="text-align:center; font-size:11px; color:#aaa; padding:15px;">Aún no hay publicaciones. ¡Sé el primero en escribir algo!</div>`;
+                return;
+            }
+
+            snapshot.forEach(doc => {
+                const post = doc.data();
+                const postId = doc.id;
+
+                let commentsHtml = "";
+                if(post.comments && post.comments.length > 0) {
+                    post.comments.forEach(c => {
+                        commentsHtml += `<div class="comment-item"><span>${c.user}:</span> ${c.text}</div>`;
+                    });
+                }
+
+                feedContainer.innerHTML += `
+                    <div class="feed-item">
+                        <div class="feed-header">
+                            <img src="${post.userAvatar}" class="avatar-sm">
+                            <div style="flex:1;">
+                                <div class="feed-user">${post.userName} <span style="font-weight:normal; color:#888; font-size:10px;">${post.userHandle || ''}</span></div>
+                                <div style="font-size:9px; color:#00ffff;">FEELING: ${post.feeling}</div>
+                            </div>
+                        </div>
+                        <div class="feed-text">${post.text}</div>
+                        
+                        <div class="comments-section">
+                            <div style="font-size:10px; color:#ffcc00; margin-bottom:4px; font-weight:bold;">Comentarios:</div>
+                            ${commentsHtml}
+                            <div class="reply-box">
+                                <input type="text" id="comment-input-${postId}" placeholder="Escribe un comentario...">
+                                <button onclick="addComment('${postId}')">Enviar</button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+        });
+    }
+
+    // Seguir / Dejar de seguir a un usuario
+    async function toggleFollow(targetUid, isFollowing) {
+        const userRef = db.collection("users").doc(currentUser.uid);
+        if(isFollowing) {
+            await userRef.update({
+                following: firebase.firestore.FieldValue.arrayRemove(targetUid)
+            });
+            currentUserData.following = currentUserData.following.filter(id => id !== targetUid);
+        } else {
+            await userRef.update({
+                following: firebase.firestore.FieldValue.arrayUnion(targetUid)
+            });
+            if(!currentUserData.following) currentUserData.following = [];
+            currentUserData.following.push(targetUid);
+        }
+        loadUsersAndFeed();
+    }
+
+    // Agregar Comentario protegido con el filtro
+    async function addComment(postId) {
+        const input = document.getElementById(`comment-input-${postId}`);
+        const text = input.value.trim();
+        if(!text) return;
+
+        const safeComment = securityFilter(text);
+
+        await db.collection("posts").doc(postId).update({
+            comments: firebase.firestore.FieldValue.arrayUnion({
+                user: currentUserData.name,
+                text: safeComment
+            })
+        });
+
+        input.value = "";
     }
 </script>
 
