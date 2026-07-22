@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TheSlap - Red Social</title>
-    <!-- Firebase SDKs -->
+    <!-- Firebase SDKs (Versión compatible con navegador) -->
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
@@ -145,14 +145,15 @@
 </div>
 
 <script>
-    // Configuración real con tus claves de Firebase
+    // Configuración real y corregida con tus claves de Firebase
     const firebaseConfig = {
-        apiKey: "AIzaSyACrD2lJ3jCh9otB9T5", // Clave configurada
+        apiKey: "AIzaSyACrD2lJ3jCh9OtB9T5UCF6-OmMkKF5QJk",
         authDomain: "theslap-1b571.firebaseapp.com",
         projectId: "theslap-1b571",
-        storageBucket: "theslap-1b571.appspot.com",
+        storageBucket: "theslap-1b571.firebasestorage.app",
         messagingSenderId: "372771523960",
-        appId: "1:372771523960:web:166fbf"
+        appId: "1:372771523960:web:166fbf0edb5b8197bc0c8d",
+        measurementId: "G-HWVYP1K8R7"
     };
 
     firebase.initializeApp(firebaseConfig);
