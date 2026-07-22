@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TheSlap - Red Social</title>
-    <!-- Firebase SDKs (Versión compatible con navegador) -->
+    <!-- Firebase SDKs -->
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
@@ -13,8 +13,8 @@
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Comic Sans MS', 'Trebuchet MS', sans-serif; }
         body {
             background-color: #120118;
-            background-image: radial-gradient(#d80073 1px, transparent 1px);
-            background-size: 20px 20px;
+            background-image: radial-gradient(#d80073 1.5px, transparent 1.5px);
+            background-size: 18px 18px;
             color: #fff;
             display: flex;
             justify-content: center;
@@ -26,62 +26,64 @@
             width: 100%; max-width: 450px;
             background: linear-gradient(145deg, #e6007e, #800040);
             border-radius: 35px; padding: 15px;
-            box-shadow: 0 0 25px rgba(230, 0, 126, 0.6);
+            box-shadow: 0 0 25px rgba(230, 0, 126, 0.8);
             border: 4px solid #ff66cc;
             height: fit-content;
         }
 
-        .pear-logo { text-align: center; font-size: 28px; font-weight: 900; color: #fff; margin-bottom: 12px; text-shadow: 0 0 8px #ff007f; }
+        .pear-logo { text-align: center; font-size: 32px; font-weight: 900; color: #fff; margin-bottom: 12px; text-shadow: 0 0 10px #ff007f; letter-spacing: -1px; }
         .pear-logo span { color: #ffeb3b; }
 
-        /* Pantalla de Autenticación */
+        /* Auth Screen */
         .auth-card { background: rgba(10, 2, 18, 0.95); padding: 20px; border-radius: 20px; border: 2px solid #ff007f; text-align: center; }
         .auth-card input { width: 100%; padding: 10px; margin: 8px 0; border-radius: 10px; border: 1px solid #ff007f; background: #1a0526; color: #fff; font-size: 13px; outline: none; }
         .btn-main { background: linear-gradient(#ff007f, #99004d); color: #fff; border: none; padding: 10px 20px; border-radius: 20px; font-weight: bold; width: 100%; margin-top: 10px; cursor: pointer; box-shadow: 0 2px 5px rgba(0,0,0,0.4); }
-        .auth-switch { font-size: 11px; margin-top: 12px; cursor: pointer; color: #00ffff; }
+        .auth-switch { font-size: 11px; margin-top: 12px; cursor: pointer; color: #00ffff; text-decoration: underline; }
 
-        /* Pantalla Principal */
+        /* App Screen */
         .screen { display: none; }
         
         .profile-card {
-            background: rgba(20, 5, 30, 0.9);
-            border: 2px solid #ff007f; border-radius: 15px; padding: 12px;
-            display: flex; gap: 12px; align-items: center; margin-bottom: 12px;
+            background: rgba(20, 5, 30, 0.95);
+            border: 2px solid #ff007f; border-radius: 18px; padding: 12px;
+            display: flex; gap: 12px; align-items: center; margin-bottom: 15px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.5);
         }
-        .avatar-lg { width: 65px; height: 65px; border-radius: 50%; border: 3px solid #ff007f; object-fit: cover; }
+        .avatar-lg { width: 60px; height: 60px; border-radius: 50%; border: 3px solid #ffcc00; object-fit: cover; }
         
-        .post-box { background: rgba(255,255,255,0.95); border-radius: 15px; padding: 10px; margin-bottom: 15px; color: #333; border: 2px solid #ff007f; }
-        .post-box textarea { width: 100%; height: 55px; border: none; outline: none; resize: none; font-size: 13px; }
+        .post-box { background: rgba(255,255,255,0.95); border-radius: 15px; padding: 12px; margin-bottom: 15px; color: #333; border: 2.5px solid #ff007f; }
+        .post-box textarea { width: 100%; height: 50px; border: none; outline: none; resize: none; font-size: 13px; font-family: sans-serif; }
 
-        .section-title { color: #ffcc00; font-size: 13px; margin: 12px 0 6px 0; text-transform: uppercase; letter-spacing: 1px; font-weight: bold; }
+        .section-title { color: #ffcc00; font-size: 12px; margin: 15px 0 6px 0; text-transform: uppercase; letter-spacing: 1px; font-weight: bold; text-shadow: 0 0 4px #000; }
 
-        /* Lista de Amigos / Usuarios */
-        .users-scroll { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 6px; margin-bottom: 10px; }
+        /* Amigos */
+        .users-scroll { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 8px; margin-bottom: 10px; }
         .user-mini-card {
-            background: rgba(255,255,255,0.08); border-radius: 10px; padding: 8px; text-align: center;
-            min-width: 80px; border: 1px solid #ff007f; flex-shrink: 0;
+            background: rgba(255,255,255,0.1); border-radius: 12px; padding: 8px; text-align: center;
+            min-width: 85px; border: 1px solid #ff007f; flex-shrink: 0;
         }
-        .user-mini-card img { width: 38px; height: 38px; border-radius: 50%; object-fit: cover; border: 1px solid #ffcc00; }
-        .user-mini-name { font-size: 10px; color: #fff; margin: 4px 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 65px; }
-        .btn-follow { background: #00cc66; color: #fff; border: none; padding: 2px 6px; font-size: 9px; border-radius: 6px; cursor: pointer; font-weight: bold; }
+        .user-mini-card img { width: 40px; height: 40px; border-radius: 50%; object-fit: cover; border: 2px solid #ffcc00; }
+        .user-mini-name { font-size: 10px; color: #fff; margin: 4px 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 70px; font-weight: bold; }
+        .btn-follow { background: #00cc66; color: #fff; border: none; padding: 3px 8px; font-size: 9px; border-radius: 10px; cursor: pointer; font-weight: bold; }
         .btn-following { background: #555; color: #ccc; }
 
-        /* Feed */
+        /* Feed Global */
         .feed-item {
-            background: rgba(15, 0, 25, 0.95); border: 1.5px solid #d80073; border-radius: 12px; padding: 10px; margin-bottom: 10px;
+            background: rgba(15, 0, 25, 0.95); border: 2px solid #d80073; border-radius: 15px; padding: 12px; margin-bottom: 12px;
+            box-shadow: 0 3px 8px rgba(0,0,0,0.4);
         }
-        .feed-header { display: flex; align-items: center; gap: 8px; margin-bottom: 6px; }
-        .avatar-sm { width: 30px; height: 30px; border-radius: 50%; object-fit: cover; border: 1px solid #ff007f; }
-        .feed-user { font-weight: bold; color: #ff66cc; font-size: 12px; }
-        .feed-text { font-size: 12px; line-height: 1.3; color: #fff; word-break: break-word; }
+        .feed-header { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
+        .avatar-sm { width: 35px; height: 35px; border-radius: 50%; object-fit: cover; border: 1.5px solid #ff007f; }
+        .feed-user { font-weight: bold; color: #ff66cc; font-size: 13px; }
+        .feed-text { font-size: 13px; line-height: 1.3; color: #fff; word-break: break-word; background: rgba(255,255,255,0.05); padding: 8px; border-radius: 8px; }
         
         /* Comentarios */
-        .comments-section { margin-top: 8px; padding-top: 6px; border-top: 1px dashed rgba(255,255,255,0.2); }
-        .comment-item { font-size: 11px; color: #e0e0e0; margin-bottom: 3px; }
+        .comments-section { margin-top: 10px; padding-top: 8px; border-top: 1px dashed rgba(255,255,255,0.2); }
+        .comment-item { font-size: 11px; color: #e0e0e0; margin-bottom: 4px; background: rgba(0,0,0,0.3); padding: 4px 8px; border-radius: 6px; }
         .comment-item span { color: #ffcc00; font-weight: bold; }
-        .reply-box { display: flex; gap: 5px; margin-top: 6px; }
-        .reply-box input { flex: 1; padding: 4px 8px; border-radius: 8px; border: 1px solid #ff007f; background: #0d0114; color: #fff; font-size: 11px; outline: none; }
-        .reply-box button { background: #d80073; color: #fff; border: none; padding: 4px 10px; border-radius: 8px; font-size: 10px; cursor: pointer; font-weight: bold; }
+        .reply-box { display: flex; gap: 5px; margin-top: 8px; }
+        .reply-box input { flex: 1; padding: 6px 10px; border-radius: 10px; border: 1px solid #ff007f; background: #0d0114; color: #fff; font-size: 11px; outline: none; }
+        .reply-box button { background: #d80073; color: #fff; border: none; padding: 6px 12px; border-radius: 10px; font-size: 10px; cursor: pointer; font-weight: bold; }
     </style>
 </head>
 <body>
@@ -89,12 +91,12 @@
 <div class="pear-container">
     <div class="pear-logo">✋ The<span>Slap</span></div>
 
-    <!-- PANTALLA 1: LOGIN / REGISTRO -->
+    <!-- LOGIN / REGISTRO -->
     <div class="auth-card" id="authScreen">
         <h3 id="authTitle" style="color:#ff66cc; margin-bottom:8px;">Iniciar Sesión</h3>
-        <input type="text" id="regName" placeholder="Tu Nombre Completo" style="display:none;">
-        <input type="text" id="regHandle" placeholder="Nombre de usuario (ej: @derek)" style="display:none;">
-        <input type="text" id="regAvatar" placeholder="URL de tu Foto de Perfil" style="display:none;">
+        <input type="text" id="regName" placeholder="Tu Nombre (ej: Tori Vega)" style="display:none;">
+        <input type="text" id="regHandle" placeholder="Usuario (ej: @tori)" style="display:none;">
+        <input type="text" id="regAvatar" placeholder="URL Foto de Perfil (Opcional)" style="display:none;">
         <input type="email" id="authEmail" placeholder="Correo electrónico">
         <input type="password" id="authPass" placeholder="Contraseña">
         
@@ -104,48 +106,44 @@
         </p>
     </div>
 
-    <!-- PANTALLA 2: APLICACIÓN PRINCIPAL -->
+    <!-- APP PRINCIPAL -->
     <div class="screen" id="appScreen">
-        <!-- Perfil del usuario actual -->
+        <!-- Perfil del usuario -->
         <div class="profile-card">
             <img src="" id="myAvatar" class="avatar-lg">
             <div style="flex:1; overflow:hidden;">
-                <h3 id="myName" style="color:#ffcc00; font-size:15px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;"></h3>
-                <div id="myHandle" style="font-size:11px; color:#00ffff; margin-bottom:3px;"></div>
-                <div style="font-size:10px; color:#ff99dd;">FEELING: <span id="myFeelingText">😎 Awesome</span></div>
-                <button onclick="logout()" style="background:#cc0000; color:#fff; border:none; padding:2px 8px; border-radius:4px; font-size:9px; margin-top:5px; cursor:pointer; font-weight:bold;">Cerrar Sesión</button>
+                <h3 id="myName" style="color:#ffcc00; font-size:16px;"></h3>
+                <div id="myHandle" style="font-size:11px; color:#00ffff;"></div>
+                <button onclick="logout()" style="background:#cc0000; color:#fff; border:none; padding:3px 8px; border-radius:5px; font-size:9px; margin-top:5px; cursor:pointer; font-weight:bold;">Cerrar Sesión</button>
             </div>
         </div>
 
         <!-- Caja para publicar -->
         <div class="post-box">
-            <textarea id="postContent" placeholder="¿Qué está pasando en Hollywood Arts?"></textarea>
-            <div style="display:flex; justify-content:space-between; align-items:center; border-top:1px solid #ddd; padding-top:6px; margin-top:4px;">
+            <textarea id="postContent" placeholder="¿Qué estás pensando? (Ej: ¡Saliendo de clases de actuación!)"></textarea>
+            <div style="display:flex; justify-content:space-between; align-items:center; border-top:1px solid #eee; padding-top:6px; margin-top:4px;">
                 <select id="postFeeling" style="font-size:11px; border:none; background:transparent; font-weight:bold; color:#d80073;">
-                    <option>😃 Happy</option>
-                    <option>😎 Cool</option>
-                    <option>😭 Dramatic</option>
-                    <option>😡 Annoyed</option>
-                    <option>🍕 Hungry</option>
+                    <option>😎 Feeling: Cool</option>
+                    <option>😃 Feeling: Happy</option>
+                    <option>🎭 Feeling: Dramatic</option>
+                    <option>😡 Feeling: Annoyed</option>
+                    <option>🍕 Feeling: Hungry</option>
                 </select>
-                <button onclick="createPost()" style="background:linear-gradient(#ff007f,#99004d); color:#fff; border:none; padding:5px 14px; border-radius:15px; font-weight:bold; cursor:pointer; font-size:11px;">POST!</button>
+                <button onclick="createPost()" style="background:linear-gradient(#ff007f,#99004d); color:#fff; border:none; padding:6px 16px; border-radius:15px; font-weight:bold; cursor:pointer; font-size:11px;">SLAP IT!</button>
             </div>
         </div>
 
-        <!-- Lista de Usuarios Reales para Seguir -->
-        <div class="section-title">Comunidad / Dudes</div>
-        <div class="users-scroll" id="usersContainer">
-            <!-- Se cargan dinámicamente -->
-        </div>
+        <!-- Lista de Amigos -->
+        <div class="section-title">Hollywood Arts Dudes</div>
+        <div class="users-scroll" id="usersContainer"></div>
 
-        <!-- Feed Principal -->
-        <div class="section-title">Feed Global</div>
+        <!-- Feed Global -->
+        <div class="section-title">Feed Global Recent Slaps</div>
         <div id="feedContainer"></div>
     </div>
 </div>
 
 <script>
-    // Configuración real y corregida con tus claves de Firebase
     const firebaseConfig = {
         apiKey: "AIzaSyACrD2lJ3jCh9OtB9T5UCF6-OmMkKF5QJk",
         authDomain: "theslap-1b571.firebaseapp.com",
@@ -164,40 +162,26 @@
     let currentUser = null;
     let currentUserData = null;
 
-    // 🛡️ Filtro de Seguridad Automático
-    const badWords = ["tonto", "idiota", "estupido", "feo", "mierda", "imbecil", "puta"];
-    function securityFilter(text) {
-        let clean = text;
-        badWords.forEach(word => {
-            const regex = new RegExp(word, "gi");
-            clean = clean.replace(regex, "****");
-        });
-        return clean;
-    }
-
-    // Alternar entre Login y Registro
     function toggleAuthMode() {
         isRegistering = !isRegistering;
-        document.getElementById('authTitle').innerText = isRegistering ? "Crear Cuenta en TheSlap" : "Iniciar Sesión";
+        document.getElementById('authTitle').innerText = isRegistering ? "Crear Cuenta" : "Iniciar Sesión";
         document.getElementById('regName').style.display = isRegistering ? "block" : "none";
         document.getElementById('regHandle').style.display = isRegistering ? "block" : "none";
         document.getElementById('regAvatar').style.display = isRegistering ? "block" : "none";
         document.getElementById('authBtn').innerText = isRegistering ? "Registrarse" : "Entrar";
-        document.getElementById('toggleText').innerText = isRegistering ? "¿Ya tienes cuenta? Inicia sesión aquí" : "¿No tienes cuenta? Regístrate aquí";
+        document.getElementById('toggleText').innerText = isRegistering ? "¿Ya tienes cuenta? Inicia sesión" : "¿No tienes cuenta? Regístrate";
     }
 
-    // Gestionar Autenticación
     async function handleAuth() {
         const email = document.getElementById('authEmail').value.trim();
         const pass = document.getElementById('authPass').value.trim();
-
-        if(!email || !pass) return alert("Por favor completa los campos de correo y contraseña.");
+        if(!email || !pass) return alert("Por favor escribe tu correo y contraseña.");
 
         if (isRegistering) {
-            const name = document.getElementById('regName').value.trim() || "Estudiante";
-            let handle = document.getElementById('regHandle').value.trim() || "@derek";
+            const name = document.getElementById('regName').value.trim() || "Hollywood Student";
+            let handle = document.getElementById('regHandle').value.trim() || "@user";
             if(!handle.startsWith("@")) handle = "@" + handle;
-            const avatar = document.getElementById('regAvatar').value.trim() || "https://i.pravatar.cc/150?img=12";
+            const avatar = document.getElementById('regAvatar').value.trim() || "https://i.pravatar.cc/150?u=" + Math.random();
             
             try {
                 const res = await auth.createUserWithEmailAndPassword(email, pass);
@@ -208,31 +192,40 @@
                     avatar: avatar,
                     following: []
                 });
-            } catch(e) { alert(e.message); }
+            } catch(e) { alert("Error: " + e.message); }
         } else {
             try {
                 await auth.signInWithEmailAndPassword(email, pass);
-            } catch(e) { alert(e.message); }
+            } catch(e) { alert("Error: " + e.message); }
         }
     }
 
     function logout() { auth.signOut(); }
 
-    // Escuchar estado del usuario en tiempo real
     auth.onAuthStateChanged(async (user) => {
         if (user) {
             currentUser = user;
-            const doc = await db.collection("users").doc(user.uid).get();
-            if(doc.exists) {
-                currentUserData = doc.data();
+            try {
+                const doc = await db.collection("users").doc(user.uid).get();
+                if(doc.exists) {
+                    currentUserData = doc.data();
+                } else {
+                    currentUserData = {
+                        name: user.email.split('@')[0],
+                        handle: "@" + user.email.split('@')[0],
+                        avatar: "https://i.pravatar.cc/150?u=" + user.uid,
+                        following: []
+                    };
+                }
                 document.getElementById('authScreen').style.display = "none";
                 document.getElementById('appScreen').style.display = "block";
-                
                 document.getElementById('myName').innerText = currentUserData.name;
                 document.getElementById('myHandle').innerText = currentUserData.handle;
                 document.getElementById('myAvatar').src = currentUserData.avatar;
-                
-                loadUsersAndFeed();
+                loadAppContent();
+            } catch(err) {
+                console.error(err);
+                alert("Error al cargar perfil: " + err.message);
             }
         } else {
             currentUser = null;
@@ -242,39 +235,37 @@
         }
     });
 
-    // Publicar un nuevo Slap
     async function createPost() {
         const textInput = document.getElementById('postContent');
         const feeling = document.getElementById('postFeeling').value;
         const text = textInput.value.trim();
         if(!text) return;
 
-        const safeText = securityFilter(text);
-
-        await db.collection("posts").add({
-            uid: currentUser.uid,
-            userName: currentUserData.name,
-            userHandle: currentUserData.handle,
-            userAvatar: currentUserData.avatar,
-            text: safeText,
-            feeling: feeling,
-            createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-            comments: []
-        });
-
-        textInput.value = "";
+        try {
+            await db.collection("posts").add({
+                uid: currentUser.uid,
+                userName: currentUserData.name,
+                userHandle: currentUserData.handle,
+                userAvatar: currentUserData.avatar,
+                text: text,
+                feeling: feeling,
+                createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+                comments: []
+            });
+            textInput.value = "";
+        } catch(e) {
+            alert("Error al publicar: " + e.message);
+        }
     }
 
-    // Cargar Comunidad y Feed en Tiempo Real
-    function loadUsersAndFeed() {
-        // Cargar Usuarios (Dudes)
+    function loadAppContent() {
+        // Cargar Amigos / Usuarios
         db.collection("users").onSnapshot(snapshot => {
             const usersContainer = document.getElementById('usersContainer');
             usersContainer.innerHTML = "";
             snapshot.forEach(doc => {
                 const u = doc.data();
-                if(u.uid === currentUser.uid) return; // No mostrarse a sí mismo
-
+                if(u.uid === currentUser.uid) return;
                 const isFollowing = currentUserData.following && currentUserData.following.includes(u.uid);
 
                 usersContainer.innerHTML += `
@@ -282,27 +273,32 @@
                         <img src="${u.avatar}">
                         <div class="user-mini-name">${u.name}</div>
                         <button class="btn-follow ${isFollowing ? 'btn-following' : ''}" onclick="toggleFollow('${u.uid}', ${isFollowing})">
-                            ${isFollowing ? 'Following' : 'Follow'}
+                            ${isFollowing ? 'Friend' : '+ Add'}
                         </button>
                     </div>
                 `;
             });
-        });
+        }, err => console.log(err));
 
-        // Cargar Feed de Publicaciones
-        db.collection("posts").orderBy("createdAt", "desc").onSnapshot(snapshot => {
+        // Cargar Feed en Tiempo Real
+        db.collection("posts").onSnapshot(snapshot => {
             const feedContainer = document.getElementById('feedContainer');
             feedContainer.innerHTML = "";
             
-            if(snapshot.empty) {
-                feedContainer.innerHTML = `<div style="text-align:center; font-size:11px; color:#aaa; padding:15px;">Aún no hay publicaciones. ¡Sé el primero en escribir algo!</div>`;
+            if(!snapshot || snapshot.empty) {
+                feedContainer.innerHTML = `<div style="text-align:center; font-size:11px; color:#aaa; padding:15px;">¡Aún no hay Slaps! Sé el primero en publicar algo.</div>`;
                 return;
             }
 
+            let postsArray = [];
             snapshot.forEach(doc => {
-                const post = doc.data();
-                const postId = doc.id;
+                postsArray.push({ id: doc.id, ...doc.data() });
+            });
 
+            // Ordenar por fecha localmente
+            postsArray.sort((a,b) => (b.createdAt?.seconds || 0) - (a.createdAt?.seconds || 0));
+
+            postsArray.forEach(post => {
                 let commentsHtml = "";
                 if(post.comments && post.comments.length > 0) {
                     post.comments.forEach(c => {
@@ -316,7 +312,7 @@
                             <img src="${post.userAvatar}" class="avatar-sm">
                             <div style="flex:1;">
                                 <div class="feed-user">${post.userName} <span style="font-weight:normal; color:#888; font-size:10px;">${post.userHandle || ''}</span></div>
-                                <div style="font-size:9px; color:#00ffff;">FEELING: ${post.feeling}</div>
+                                <div style="font-size:9px; color:#00ffff; font-weight:bold;">${post.feeling}</div>
                             </div>
                         </div>
                         <div class="feed-text">${post.text}</div>
@@ -325,46 +321,38 @@
                             <div style="font-size:10px; color:#ffcc00; margin-bottom:4px; font-weight:bold;">Comentarios:</div>
                             ${commentsHtml}
                             <div class="reply-box">
-                                <input type="text" id="comment-input-${postId}" placeholder="Escribe un comentario...">
-                                <button onclick="addComment('${postId}')">Enviar</button>
+                                <input type="text" id="comment-input-${post.id}" placeholder="Escribe un comentario...">
+                                <button onclick="addComment('${post.id}')">Comentar</button>
                             </div>
                         </div>
                     </div>
                 `;
             });
-        });
+        }, err => console.log(err));
     }
 
-    // Seguir / Dejar de seguir a un usuario
     async function toggleFollow(targetUid, isFollowing) {
         const userRef = db.collection("users").doc(currentUser.uid);
         if(isFollowing) {
-            await userRef.update({
-                following: firebase.firestore.FieldValue.arrayRemove(targetUid)
-            });
+            await userRef.update({ following: firebase.firestore.FieldValue.arrayRemove(targetUid) });
             currentUserData.following = currentUserData.following.filter(id => id !== targetUid);
         } else {
-            await userRef.update({
-                following: firebase.firestore.FieldValue.arrayUnion(targetUid)
-            });
+            await userRef.update({ following: firebase.firestore.FieldValue.arrayUnion(targetUid) });
             if(!currentUserData.following) currentUserData.following = [];
             currentUserData.following.push(targetUid);
         }
-        loadUsersAndFeed();
+        loadAppContent();
     }
 
-    // Agregar Comentario protegido con el filtro
     async function addComment(postId) {
         const input = document.getElementById(`comment-input-${postId}`);
         const text = input.value.trim();
         if(!text) return;
 
-        const safeComment = securityFilter(text);
-
         await db.collection("posts").doc(postId).update({
             comments: firebase.firestore.FieldValue.arrayUnion({
                 user: currentUserData.name,
-                text: safeComment
+                text: text
             })
         });
 
