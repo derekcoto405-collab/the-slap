@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Slap - PearPhone Edition</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: #11052C;
+            background-image: radial-gradient(#3d1e6d 2px, transparent 2px);
+            background-size: 30px 30px;
+            color: #333;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        /* Marcos y estructura del PearPhone */
+        .pearphone-outer {
+            background: linear-gradient(145deg, #e6b800, #ffea00);
+            border-radius: 60px 60px 80px 80px;
+            padding: 20px 20px 40px 20px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6), inset 0 2px 5px rgba(255, 255, 255, 0.8);
+            max-width: 480px;
+            width: 100%;
+            position: relative;
+            border: 4px solid #b38f00;
+        }
+
+        /* Tallo de la Pera arriba */
+        .pearphone-outer::before {
+            content: '';
+            position: absolute;
+            top: -25px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 18px;
+            height: 30px;
+            background: #553311;
+            border-radius: 10px;
+            z-index: -1;
+        }
+
+        /* Pantalla del teléfono */
+        .pearphone-screen {
+            background: #2b1055;
+            background-image: linear-gradient(135deg, #2b1055 0%, #511252 100%);
+            border-radius: 40px;
+            overflow: hidden;
+            border: 4px solid #1a0836;
+            max-height: 780px;
+            display: flex;
+            flex-direction: column;
+            box-shadow: inset 0 0 15px rgba(0,0,0,0.8);
+        }
+
+        /* Header de The Slap */
+        header {
+            background: linear-gradient(90deg, #ff6b00 0%, #ff007f 100%);
+            color: white;
+            padding: 15px;
+            text-align: center;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 900;
+            font-style: italic;
+            text-transform: uppercase;
+            text-shadow: 2px 2px 0px #000;
+            letter-spacing: 1px;
+        }
+
+        /* Contenido Scrolleable */
+        .app-content {
+            padding: 15px;
+            overflow-y: auto;
+            flex-grow: 1;
+        }
+
+        .app-content::-webkit-scrollbar {
+            width: 6px;
+        }
+        .app-content::-webkit-scrollbar-thumb {
+            background: #ff007f;
+            border-radius: 10px;
+        }
+
+        /* Panel del Usuario / Perfil */
+        .profile-selector {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 15px;
+            padding: 10px;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: white;
+        }
+
+        .profile-selector img {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            border: 2px solid #ff6b00;
+            object-fit: cover;
+        }
+
+        .profile-info select {
+            background: #ff007f;
+            color: white;
+            border: none;
+            padding: 4px 8px;
+            border-radius: 10px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 4px;
+        }
+
+        /* Caja para publicar */
+        .post-box {
+            background: #ffffff;
+            border-radius: 15px;
+            padding: 15px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+            border: 3px solid #ff007f;
+            margin-bottom: 20px;
+        }
+
+        textarea {
+            width: 100%;
+            height: 65px;
+            padding: 10px;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            resize: none;
+            font-size: 0.95rem;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+
+        textarea:focus {
+            border-color: #ff6b00;
+        }
+
+        .controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 10px;
+        }
+
+        .feeling-selector select {
+            padding: 6px 10px;
+            border-radius: 15px;
+            border: 2px solid #ff007f;
+            background: white;
+            font-weight: bold;
+            font-size: 0.85rem;
+            color: #333;
+            cursor: pointer;
+        }
+
+        /* Botón Slap It! */
+        .btn-slap {
+            background: linear-gradient(135deg, #ff6b00 0%, #ff0055 100%);
+            color: white;
+            border: none;
+            padding: 8px 18px;
+            font-size: 1rem;
+            font-weight: 900;
+            font-style: italic;
+            border-radius: 20px;
+            cursor: pointer;
+            box-shadow: 0 4px 0px #b3003b;
+            transition: all 0.1s ease;
+            text-transform: uppercase;
+        }
+
+        .btn-slap:active {
+            transform: translateY(3px);
+            box-shadow: 0 1px 0px #b3003b;
+        }
+
+        /* Feed */
+        .feed {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .post {
+            background: white;
+            border-radius: 12px;
+            padding: 12px 15px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+            border-left: 6px solid #ff6b00;
+            animation: fadeIn 0.3s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .post-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 8px;
+        }
+
+        .post-avatar {
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .post-user-details {
+            flex-grow: 1;
+        }
+
+        .username {
+            font-weight: bold;
+            color: #751b72;
+            font-size: 0.95rem;
+            display: block;
+        }
+
+        .feeling-badge {
+            display: inline-block;
+            background: #ffe6f2;
+            color: #ff007f;
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-size: 0.75rem;
+            font-weight: bold;
+        }
+
+        .post-content {
+            font-size: 0.9rem;
+            line-height: 1.3;
+            color: #222;
+        }
+
+        .post-time {
+            font-size: 0.7rem;
+            color: #888;
+            margin-top: 6px;
+            text-align: right;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- PearPhone Wrapper -->
+    <div class="pearphone-outer">
+        <div class="pearphone-screen">
+            
+            <header>
+                <div class="logo">THE SLAP</div>
+            </header>
+
+            <div class="app-content">
+                <!-- Selector de Personaje -->
+                <div class="profile-selector">
+                    <img id="currentAvatar" src="https://i.pravatar.cc/100?img=47" alt="Avatar">
+                    <div class="profile-info">
+                        <small>Publicar como:</small><br>
+                        <select id="userSelect" onchange="changeUser()">
+                            <option value="Tori Vega|https://i.jpg.fish/i/tori.png">Tori Vega</option>
+                            <option value="Jade West|https://i.jpg.fish/i/jade.png">Jade West</option>
+                            <option value="Cat Valentine|https://i.jpg.fish/i/cat.png">Cat Valentine</option>
+                            <option value="Beck Oliver|https://i.jpg.fish/i/beck.png">Beck Oliver</option>
+                            <option value="Robbie Shapiro|https://i.jpg.fish/i/robbie.png">Robbie Shapiro</option>
+                            <option value="André Harris|https://i.jpg.fish/i/andre.png">André Harris</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Caja de publicación -->
+                <div class="post-box">
+                    <textarea id="statusInput" placeholder="¿Qué estás pensando?"></textarea>
+                    
+                    <div class="controls">
+                        <div class="feeling-selector">
+                            <select id="feelingSelect">
+                                <option value="😃 Happy">😃 Happy</option>
+                                <option value="🎭 Drama">🎭 Drama</option>
+                                <option value="🤯 Stressed">🤯 Stressed</option>
+                                <option value="✨ Fabulous">✨ Fabulous</option>
+                                <option value="🎤 Musical">🎤 Musical</option>
+                                <option value="😴 Tired">😴 Tired</option>
+                                <option value="🖤 Annoyed">🖤 Annoyed</option>
+                            </select>
+                        </div>
+                        <button class="btn-slap" onclick="addPost()">SLAP IT!</button>
+                    </div>
+                </div>
+
+                <!-- Muro de Publicaciones -->
+                <div class="feed" id="feed"></div>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        // Avatares predeterminados para los personajes
+        const avatars = {
+            "Tori Vega": "https://images.fineartamerica.com/images/artworkimages/mediumlarge/3/tori-vega-victorious-square-art-brandi-f-rodriguez.jpg",
+            "Jade West": "https://i.pinimg.com/736x/87/40/e3/8740e340a656a84f33b1e32d1844b245.jpg",
+            "Cat Valentine": "https://i.pinimg.com/736x/21/2e/bb/212ebb7c6d66e746d034aa1031b2efbe.jpg",
+            "Beck Oliver": "https://i.pinimg.com/736x/28/ef/20/28ef2081e7d8004f210dff561f37e42d.jpg",
+            "Robbie Shapiro": "https://i.pinimg.com/736x/a2/12/f2/a212f205b9b9409865fbcf87dfa4a20b.jpg",
+            "André Harris": "https://i.pinimg.com/736x/6f/90/19/6f9019688b139266f81156be78a2e7c4.jpg"
+        };
+
+        // Cambiar la foto al elegir personaje
+        function changeUser() {
+            const select = document.getElementById('userSelect');
+            const name = select.value.split('|')[0];
+            const avatarImg = document.getElementById('currentAvatar');
+            avatarImg.src = avatars[name] || "https://i.pravatar.cc/100?img=1";
+        }
+
+        // Reproducir sonido "The Slap!" usando la síntesis de voz del navegador
+        function playSlapSound() {
+            if ('speechSynthesis' in window) {
+                const utterance = new SpeechSynthesisUtterance("The Slap!");
+                utterance.pitch = 1.4; // Tono divertido
+                utterance.rate = 1.1;  // Un poco más rápido
+                utterance.lang = 'en-US';
+                window.speechSynthesis.speak(utterance);
+            }
+        }
+
+        // Cargar posts guardados desde el navegador al abrir la página
+        function loadPosts() {
+            const feed = document.getElementById('feed');
+            const savedPosts = JSON.parse(localStorage.getItem('theslap_posts')) || [];
+
+            if (savedPosts.length === 0) {
+                // Si no hay ninguno, cargar uno de demostración
+                savedPosts.push({
+                    username: "Tori Vega",
+                    avatar: avatars["Tori Vega"],
+                    feeling: "✨ Fabulous",
+                    content: "¡Bienvenidos a The Slap en mi nuevo PearPhone! 🍐📱",
+                    time: "Hace un momento"
+                });
+            }
+
+            feed.innerHTML = '';
+            savedPosts.forEach(post => {
+                feed.appendChild(createPostElement(post));
+            });
+        }
+
+        // Crear el elemento HTML del post
+        function createPostElement(data) {
+            const post = document.createElement('div');
+            post.className = 'post';
+            post.innerHTML = `
+                <div class="post-header">
+                    <img src="${data.avatar}" class="post-avatar" alt="${data.username}">
+                    <div class="post-user-details">
+                        <span class="username">${data.username}</span>
+                        <span class="feeling-badge">Feeling: ${data.feeling}</span>
+                    </div>
+                </div>
+                <div class="post-content">${data.content}</div>
+                <div class="post-time">${data.time}</div>
+            `;
+            return post;
+        }
+
+        // Agregar una nueva publicación
+        function addPost() {
+            const input = document.getElementById('statusInput');
+            const feeling = document.getElementById('feelingSelect').value;
+            const select = document.getElementById('userSelect');
+            const username = select.value.split('|')[0];
+            const feed = document.getElementById('feed');
+
+            if (input.value.trim() === '') {
+                alert('¡Escribí una actualización de estado!');
+                return;
+            }
+
+            // Reproducir sonido
+            playSlapSound();
+
+            const newPostData = {
+                username: username,
+                avatar: avatars[username],
+                feeling: feeling,
+                content: input.value,
+                time: "Justo ahora"
+            };
+
+            // Guardar en LocalStorage
+            const savedPosts = JSON.parse(localStorage.getItem('theslap_posts')) || [];
+            savedPosts.unshift(newPostData);
+            localStorage.setItem('theslap_posts', JSON.stringify(savedPosts));
+
+            // Insertar en la pantalla
+            feed.prepend(createPostElement(newPostData));
+
+            // Limpiar input
+            input.value = '';
+        }
+
+        // Inicializar la app
+        window.onload = function() {
+            changeUser();
+            loadPosts();
+        };
+    </script>
+</body>
+</html>
